@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Hack Simulator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d0d0d;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Main Container for Form */
+        #info {
+            margin-top: 50px;
+            padding: 30px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header */
+        h2 {
+            color: #00e676;
+            font-weight: 600;
+        }
+
+        /* Labels and Paragraphs */
+        label, p {
+            font-size: 1.1em;
+            color: #b3b3b3;
+        }
+
+        /* Input Fields */
+        input[type="text"], select, input[type="range"] {
+            width: 85%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background-color: #1a1a1a;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus, input[type="range"]:focus {
+            border: 1px solid #00e676;
+        }
+
+        /* Button Styling */
+        input[type="button"] {
+            background: #00e676;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        input[type="button"]:hover {
+            background: #1de9b6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 230, 118, 0.3);
+        }
+
+        /* Hacking Screen Styling */
+        #start {
+            display: none;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #0d47a1, #00e676);
+            color: #ffffff;
+            text-align: center;
+        }
+
+        #start.active {
+            display: block;
+        }
+
+        .progress-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .progress-bar {
+            color: #000;
+            background-color: #00e676;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #1a1a1a;
+            color: #9e9e9e;
+            padding: 20px;
+            font-size: 0.9em;
+            text-align: center;
+            width: 100%;
+        }
+
+        footer a {
+            color: #00e676;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #1de9b6;
+        }
+    </style>
+</head>
+<body>
+
+<div id="info">
+    <h2>Enter Your Details</h2>
+    <form>
+        <label>Username</label>
+        <input type="text" placeholder="Enter Username" id="username" required><br>
+
+        <label>Select Platform</label>
+        <select id="platform">
+            <option>Facebook</option>
+            <option>Instagram</option>
+            <option>Website</option>
+        </select><br>
+
+        <label>XP</label>
+        <input type="range" min="0" max="1010" value="250" onchange="updateTextInput(this.value);" id="xpRange">
+        <p id="textInput">250 XP</p><br>
+
+        <input type="checkbox" id="t&c"> <a href="https://t.me/THE_DARK_SCRIPTER"><p>Accept Terms & Conditions</p></a><br>
+
+        <input type="button" value="Start Hacking" onclick="confirmHacking()">
+    </form>
+</div>
+
+<div id="start" class="centered">
+    <h2>Hacking in Progress...</h2>
+    <button id="startBtn" onclick="startProgress()">Start</button>
+
+    <div class="progress-container">
+        <div class="progress">
+            <div class="progress-bar progress-bar-info progress-bar-striped active" id="load" role="progressbar" 
+                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                Loading...
+            </div>
+        </div>
+    </div>
+
+    <h3 id="progress-text">Preparing to Hack...</h3>
+    <p>Your account is being hacked</p>
+    <p><span id="xp-value">0 XP</span></p>
+
+    <marquee behavior="alternate">
+        <h3><font color="Blue">...HACKING...</font></h3>
+    </marquee>
+</div>
+
+<footer>
+    <p>&copy; 2024 THE DARK SCRIPTER. All Rights Reserved.</p>
+    <p>Made with ♥ by <a href="https://www.facebook.com/MD.SOFIKUL.ISLAM.OFFICIALL">MD SOFIKUL ISLAM</a></p>
+</footer>
+
+<script>
+    function updateTextInput(val) {
+        document.getElementById("textInput").innerText = val + " XP";
+    }
+
+    function confirmHacking() {
+        let username = document.getElementById("username").value;
+        let platform = document.getElementById("platform").value;
+        if (username && document.getElementById("t&c").checked) {
+            let confirmAction = confirm(`Are you sure you want to hack ${username} on ${platform}?`);
+            if (confirmAction) {
+                document.getElementById("info").style.display = "none";
+                document.getElementById("start").classList.add("active");
+            }
+        } else {
+            alert("Please fill in all details and accept terms & conditions!");
+        }
+    }
+
+    function startProgress() {
+        document.getElementById("startBtn").disabled = true;
+        let elem = document.getElementById("load");
+        let progressText = document.getElementById("progress-text");
+        let xpDisplay = document.getElementById("xp-value");
+        let width = 0;
+        let xpValue = 0;
+        let interval = setInterval(frame, 50);
+
+        function frame() {
+            if (width >= 100) {
+                clearInterval(interval);
+                elem.innerHTML = "Complete";
+                progressText.innerHTML = "Hacking Complete!";
+                setTimeout(() => {
+                    alert("Hacking successful! XP maxed out!");
+                }, 500);
+            } else {
+                width++;
+                xpValue += 10;
+                elem.style.width = width + '%';
+                elem.setAttribute('aria-valuenow', width);
+                xpDisplay.innerText = xpValue + " XP";
+
+                if (width < 30) {
+                    progressText.innerHTML = "Initializing hack...";
+                } else if (width < 60) {
+                    progressText.innerHTML = "Accessing server...";
+                } else if (width < 90) {
+                    progressText.innerHTML = "Retrieving data...";
+                } else {
+                    progressText.innerHTML = "Finalizing...";
+                }
+            }
+        }
+    }
+
+    document.getElementById("info").style.display = "block";
+</script>
+
+</body>
+</html>
